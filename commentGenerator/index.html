@@ -1,0 +1,100 @@
+<html>
+<head>
+	<title>Comment Generator</title>	
+	<script>
+
+		function init() {
+			const reader = new FileReader();
+			const fileSelector = document.getElementById('file-selector');
+
+			fileSelector.addEventListener('change', (event) => {
+				fileList = event.target.files;
+				console.log(fileList);
+				reader.readAsText(fileList[0]);
+			});
+
+			
+			reader.addEventListener('load', (event) => {
+
+				var data = event.target.result;
+				var allRows = data.split(/\r?\n|\r/);
+				console.log(allRows);				
+
+				//Parsing data
+				var data = "";
+				for (var i = 1; i < allRows.length; i++) {
+					
+					let student = allRows[i];
+
+					var name = student.split(",")[0];
+					var pronoun = student.split(",")[1];
+					var mathLevel = student.split(",")[2];
+					var pace = student.split(",")[3];
+					var test1 = student.split(",")[4];
+					var test2 = student.split(",")[5];
+					var test3 = student.split(",")[6];		
+					
+					var comment = "";
+
+					// She pronoun...
+					if (pronoun == "she") {
+						// If no tests...
+						if(test1 < 70 && test2 < 70 && test3 < 70) {
+							comment = name + " is demonstrating " + pace + " command of the class material, reflected by her progress on the Knowre instructional platform. Because she has not attempted any tests on the material thus far, it is expected that " + name + "’s grade will change to better reflect her understanding as she moves forward. At her current pace, it is unlikely that " + name + " will complete the subject of " + mathLevel + " within this school-year. " + name + "’s report card reads “In Progress”, which means she has yet to finish the three required chapter tests for her semester 1 grade. Once she completes these tests, her grade for the semester will be entered retroactively. At that point, " + name + " can continue on with the three chapter tests required for her semester 2 grade. To stay on pace with this goal, she will need to allocate more time to her math class.";
+						}
+
+						// If one or two tests...
+						if(test1 >= 70 || test2 >= 70 || test3 >= 70) {
+							let tests = "";
+							if (test1 >= 70) { tests += test1 + "%"; }
+							if (test2 >= 70) { tests += ", and " +test2+ "%"; }						
+
+							comment = name + " is demonstrating " + pace + " command of the class material, reflected by her progress on the Knowre instructional platform and her test score(s) (" + tests + "). " + name + "’s report card reads “In Progress”, which means she has yet to finish the three required chapter tests for her semester 1 grade. Once she completes these tests, her grade for the semester will be entered retroactively. At that point, " + name + " can continue on with the three chapter tests required for her semester 2 grade. ";
+						}
+
+						// If all three tests...
+						if(test1 >= 70 && test2 >= 70 && test3 >= 70) {
+							comment = name + " is demonstrating " + pace + " command of the class material. Her grade is reflective of her performance with the instructional practice presented via the Knowre Math platform, as well as her performance on three or more chapter tests (three tests being the equivalent of one semester). At her current pace, it is likely that " + name + " will complete the subject of " + mathLevel + " within this school-year. Keep up the great work, " + name + "!";
+						}	
+					}
+
+					// He pronoun...
+					else if (pronoun == "he") {
+						// If no tests...
+						if(test1 < 70 && test2 < 70 && test3 < 70) {
+							comment = name + " is demonstrating " + pace + " command of the class material, reflected by his progress on the Knowre instructional platform. Because he has not attempted any tests on the material thus far, it is expected that " + name + "’s grade will change to better reflect her understanding as he moves forward. At his current pace, it is unlikely that " + name + " will complete the subject of " + mathLevel + " within this school-year. " + name + "’s report card reads “In Progress”, which means he has yet to finish the three required chapter tests for his semester 1 grade. Once he completes these tests, her grade for the semester will be entered retroactively. At that point, " + name + " can continue on with the three chapter tests required for his semester 2 grade. To stay on pace with this goal, he will need to allocate more time to her math class.";
+						}
+
+						// If one or two tests...
+						if(test1 >= 70 || test2 >= 70 || test3 >= 70) {
+
+							let tests = "";
+							if (test1 >= 70) { tests += test1 + "%"; }
+							if (test2 >= 70) { tests += ", and " +test2+ "%"; }	
+
+							comment = name + " is demonstrating " + pace + " command of the class material, reflected by his progress on the Knowre instructional platform and his test score(s) (" + tests + "). " + name + "’s report card reads “In Progress”, which means he has yet to finish the three required chapter tests for his semester 1 grade. Once he completes these tests, his grade for the semester will be entered retroactively. At that point, " + name + " can continue on with the three chapter tests required for his semester 2 grade. ";
+						}
+
+						// If all three tests...
+						if(test1 >= 70 && test2 >= 70 && test3 >= 70) {
+							comment = name + " is demonstrating " + pace + " command of the class material. His grade is reflective of his performance with the instructional practice presented via the Knowre Math platform, as well as his performance on three or more chapter tests (three tests being the equivalent of one semester). At his current pace, it is likely that " + name + " will complete the subject of " + mathLevel + " within this school-year. Keep up the great work, " + name + "!";
+						}	
+					}	
+
+					document.getElementById("output").innerHTML += "<br><h3>" + name + "</h3><i>Test Scores: " + test1 + ", " + test2 + ", " + test3 +"</i><br><br>" + comment;
+				}
+					
+			});
+		}	
+
+
+	</script>
+
+</head>
+
+<body onload="init()">
+	<input type="file" id="file-selector">
+	<div><br><a href="https://docs.google.com/spreadsheets/d/1I79exP7NUMO-w2yi37EeGCfLb_bPYixkVQ70o42aLjQ/edit?usp=sharing">Spreadsheet format.</a></div>
+	<div id="output"></div>
+</body>
+</html>
