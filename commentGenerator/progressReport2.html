@@ -6,11 +6,13 @@
 		body {
 			background-color: #313236;
 			text-align: center;
-			color: #eee;
+			color: #ddd;
 		}	
 		a {			
 			color: #fff; 
 		}	
+		h1, h3 {color: #fff;}
+
 		#instructions {
 			text-align: left;
 			max-width: 800px;
@@ -74,7 +76,7 @@
 						// If no tests...
 						if(test1 < 70 && test2 < 70 && test3 < 70) {							
 
-							comment = "While " + name + " has been making progress and attending class, she has not attempted any tests on the material thus far, so her report card reads “In Progress”, which means she has yet to finish the three required chapter tests for her semester 1 grade. In order to earn credit for a semester’s work, students must complete three tests; a total of six tests are required to complete " + mathLevel + ". At her current pace, it’s unlikely that " + name + " will complete " + mathLevel + " within this school-year. Our goal is to support " + name + " in finishing the first semester of " + mathLevel + " by the end of this school year so that she can receive credit retroactively. For Semester 2, she can continue mathLab during the summer or fall; we’ll detail these options to you and " + name + " via email in the coming weeks.";
+							comment = "While " + name + " has been making progress and attending class, she has not attempted any tests on the material thus far, so her progress report reads “In Progress”, which means she has yet to finish the three required chapter tests for her semester 1 grade. In order to earn credit for a semester’s work, students must complete three tests; a total of six tests are required to complete " + mathLevel + ". At her current pace, it’s unlikely that " + name + " will complete " + mathLevel + " within this school-year. Our goal is to support " + name + " in finishing the first semester of " + mathLevel + " by the end of this school year so that she can receive credit retroactively. For Semester 2, she can continue mathLab during the summer or fall; we’ll detail these options to you and " + name + " via email in the coming weeks.";
 						}
 
 						// If one or two tests...
@@ -84,7 +86,7 @@
 							if (test1 >= 70) { tests += test1 + "%"; }
 							if (test2 >= 70) { tests += ", and " +test2+ "%"; }						
 
-							comment = "In order to earn credit for a semester’s work, students must complete three tests; a total of six tests are required to complete " + mathLevel + ". While " + name + " has been making progress and attending class, she has yet to complete Semester 1’s three required tests, so her report card reads “In Progress.” Still, " + name + " is demonstrating " + pace + " command of the class material, reflected by her one/two test scores (" + tests + "). Our goal is to support " + name + " in completing the first semester of " + mathLevel + " by the end of this school year so that she can receive credit retroactively. For Semester 2, " + name + " can continue mathLab during the summer or fall; we’ll detail these options to you and " + name + " via email in the coming weeks.";
+							comment = "In order to earn credit for a semester’s work, students must complete three tests; a total of six tests are required to complete " + mathLevel + ". While " + name + " has been making progress and attending class, she has yet to complete Semester 1’s three required tests, so her progress report reads “In Progress.” Still, " + name + " is demonstrating " + pace + " command of the class material, reflected by her one/two test scores (" + tests + "). Our goal is to support " + name + " in completing the first semester of " + mathLevel + " by the end of this school year so that she can receive credit retroactively. For Semester 2, " + name + " can continue mathLab during the summer or fall; we’ll detail these options to you and " + name + " via email in the coming weeks.";
 						}
 
 						// If completed Semester 1...
@@ -115,7 +117,7 @@
 						// If no tests...
 						if(test1 < 70 && test2 < 70 && test3 < 70) {							
 
-							comment = "While " + name + " has been making progress and attending class, he has not attempted any tests on the material thus far, so his report card reads “In Progress”, which means he has yet to finish the three required chapter tests for his semester 1 grade. In order to earn credit for a semester’s work, students must complete three tests; a total of six tests are required to complete " + mathLevel + ". At his current pace, it’s unlikely that " + name + " will complete " + mathLevel + " within this school-year. Our goal is to support " + name + " in finishing the first semester of " + mathLevel + " by the end of this school year so that he can receive credit retroactively. For Semester 2, he can continue mathLab during the summer or fall; we’ll detail these options to you and " + name + " via email in the coming weeks.";
+							comment = "While " + name + " has been making progress and attending class, he has not attempted any tests on the material thus far, so his progress report reads “In Progress”, which means he has yet to finish the three required chapter tests for his semester 1 grade. In order to earn credit for a semester’s work, students must complete three tests; a total of six tests are required to complete " + mathLevel + ". At his current pace, it’s unlikely that " + name + " will complete " + mathLevel + " within this school-year. Our goal is to support " + name + " in finishing the first semester of " + mathLevel + " by the end of this school year so that he can receive credit retroactively. For Semester 2, he can continue mathLab during the summer or fall; we’ll detail these options to you and " + name + " via email in the coming weeks.";
 						}
 
 						// If one or two tests...
@@ -125,7 +127,7 @@
 							if (test1 >= 70) { tests += test1 + "%"; }
 							if (test2 >= 70) { tests += ", and " +test2+ "%"; }						
 
-							comment = "In order to earn credit for a semester’s work, students must complete three tests; a total of six tests are required to complete " + mathLevel + ". While " + name + " has been making progress and attending class, he has yet to complete Semester 1’s three required tests, so his report card reads “In Progress.” Still, " + name + " is demonstrating " + pace + " command of the class material, reflected by his one/two test scores (" + tests + "). Our goal is to support " + name + " in completing the first semester of " + mathLevel + " by the end of this school year so that he can receive credit retroactively. For Semester 2, " + name + " can continue mathLab during the summer or fall; we’ll detail these options to you and " + name + " via email in the coming weeks.";
+							comment = "In order to earn credit for a semester’s work, students must complete three tests; a total of six tests are required to complete " + mathLevel + ". While " + name + " has been making progress and attending class, he has yet to complete Semester 1’s three required tests, so his progress report reads “In Progress.” Still, " + name + " is demonstrating " + pace + " command of the class material, reflected by his one/two test scores (" + tests + "). Our goal is to support " + name + " in completing the first semester of " + mathLevel + " by the end of this school year so that he can receive credit retroactively. For Semester 2, " + name + " can continue mathLab during the summer or fall; we’ll detail these options to you and " + name + " via email in the coming weeks.";
 						}
 
 						// If completed Semester 1...
@@ -176,6 +178,7 @@
 <body onload="init()">
 
 	<div id="instructions">
+		<h1>Progress Reports 2</h1>
 		<input type="file" id="file-selector">
 		<div style="display: inline-block;"><a target="_blank" href="https://docs.google.com/spreadsheets/d/1I79exP7NUMO-w2yi37EeGCfLb_bPYixkVQ70o42aLjQ/edit?usp=sharing">Spreadsheet format</a>; save as CSV.</div>
 	</div>	
