@@ -71,6 +71,11 @@
 					
 					var comment = "";
 
+					// Removing spaces from pronouns
+					pronoun = pronoun.replace(/\s/g, '');
+					name = name.replace(/\s/g, '');
+					mathLevel = mathLevel.replace(/\s/g, '');
+					
 					// She pronoun...
 					if (pronoun == "she") {
 						// If no tests...
