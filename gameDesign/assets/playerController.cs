@@ -4,39 +4,45 @@ using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
-    // Public Variables
-    public float speed;                     // The player's horizontal speed
-    public float jumpForce;                 // How high the player jumps
-    public LayerMask groundLayer;           // What objects the game considers as "ground"
-
-    private Rigidbody2D rb;                 // The player's rigidBody component, which controls physics
-    private Collider2D col;                 // The player's collider, which determines its boundaries
-    public bool isGrounded;                 // A variable that keeps track of whether hte player is on the ground
-    private float distanceToGround;         // The distance from the player's center to its bottom boundary
     
+    public float maxSpeed;
+    public float acceleration;
+    public float jumpForce;
+
+    private Rigidbody2D rb;
+    private Vector2 direction;
+
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();           // A variable that stores the player's rigidBody
-        col = GetComponent<Collider2D>();           // A variable that stores the player's collider
-        distanceToGround = col.bounds.extents.y;    // Calcluating the distance from the player's center to the bottom of its collider
+        rb = GetComponent<Rigidbody2D>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Horizontal Movement
-        Vector2 velocity = new Vector2(Input.GetAxis("Horizontal") * speed, 0);     // Reading the player's input to determine movemenet direction
-        rb.AddForce(velocity);                                                      // Adding a movement force to the player
+        // Declaring direction variable
+        direction = new Vector2(0, 0);
 
-        // Jump        
+        // If Rigidbody's current speed is less than max speed...
+        if (rb.velocity.x < maxSpeed)
+        {
+            // Add acceleration to the direction's x-component 
+            direction.x = acceleration;
+        }
+
+        // If the jump button is pressed down...
         if (Input.GetButton("Jump"))
         {
-            // Sending a line from the player's position to it's feet to calculate if its standing on "ground"
-            isGrounded = Physics2D.Raycast(transform.position, Vector3.down, distanceToGround + 0.1f, groundLayer).collider;
+            //_______________________________
+            // Add jumpForce to the direction's y-component
+            
 
-            // If the player is standing on ground, apply the vertical jump force
-            if (isGrounded) { rb.AddForce(new Vector2(0, jumpForce)); }            
+            //_______________________________
         }
+
+        // Applying directional force to Ribidbody
+        rb.AddForce(direction);
     }
 }
