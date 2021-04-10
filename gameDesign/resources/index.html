@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			html, body {								
+				margin: 0px;
+				padding: 0px;
+				background-color: #484349;				
+				text-align: center;
+			}
+			#instructions {								
+				color: #ccc;
+				text-align: left;
+				padding: 25px;
+			}	
+			#instructions #title {				
+				font-size: 2em;				
+				color: #eee;
+				display: inline-block;
+							
+			}
+			
+			.resourceItem a {
+				text-align: left;
+				display: block;
+				color: #fff;
+				margin-left: 50px; 
+			}
+
+
+
+		</style>	
+
+		<script type="text/javascript">
+			var nameArray = new Array(
+				"backgrounds",
+				"cartoonPlatformer",
+				"cartoonTown",
+				"city",
+				"desert",
+				"forest",
+				"obstacles",
+				"plants",
+				"underwater"
+			);
+
+			function init() {
+
+				let html = "";
+
+				for (var i = nameArray.length - 1; i >= 0; i--) {
+					html += "<div class='resourceItem'><a href='"+ nameArray[i] +".zip'>"+ nameArray[i] +"</div>";
+				}
+
+				document.getElementById("container").innerHTML = html;
+			}
+
+		</script>	
+	</head>
+
+	<body onload="init()">		
+		<div id="instructions">
+			<div id="title">Game Design Resources</div>					
+		</div>
+		
+		<div id="container">
+
+		</div>
+		
+	</body>
+
+</html>
