@@ -22,12 +22,13 @@
 				console.log(allRows);
 
 				let output = "";
-				for (var i =  0; i < allRows.length; i++) {
+				for (var i =  0; i < allRows.length; i++) {				
 					
 					let firstName = allRows[i].split(",")[0].toLowerCase();
 					let lastName = allRows[i].split(",")[1].toLowerCase();
 					let knowre = allRows[i].split(",")[3].toLowerCase();
-					output += "<div id=" + firstName + "," + lastName + ">" + knowre + "</div>";
+					
+					output += "<div id='" + firstName + "," + lastName + "'>" + knowre + "</div>";
 				}
 
 				
