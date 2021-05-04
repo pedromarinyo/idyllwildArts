@@ -5,13 +5,17 @@
 	
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 	
-	<script>
+	
 
+</head>
+<script>
 
-		$.ajax({
-	    	url: 'data.csv',
-	    	dataType: 'text',
-	    }).done(successFunction);
+		$(window).on("load", function() {
+			$.ajax({
+		    	url: 'data.csv',
+		    	dataType: 'text',
+		    }).done(successFunction);			
+		});
 
 		function successFunction(data) {
 			let allRows = data.split(/\r?\n|\r/);
@@ -31,14 +35,11 @@
 			
 			$("#output").html(output);					
 		
-		}	
+		}
 
 
 	</script>
-
-</head>
-
 <body>
-	<div id="output">test</div>
+	<div id="output">test1</div>
 </body>
 </html>
