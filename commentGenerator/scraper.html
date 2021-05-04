@@ -7,38 +7,29 @@
 	
 	<script>
 
-		
-		function init() {
+
+		$.ajax({
+	    	url: 'data.csv',
+	    	dataType: 'text',
+	    }).done(successFunction);
+
+		function successFunction(data) {
+			let allRows = data.split(/\r?\n|\r/);
 			
+			console.log(allRows);
 
-			$.ajax({
-		    	url: 'data.csv',
-		    	dataType: 'text',
-		    }).done(successFunction);
-
-			function successFunction(data) {
-				let allRows = data.split(/\r?\n|\r/);
+			let output = "";
+			for (var i =  0; i < allRows.length; i++) {				
 				
-				console.log(allRows);
+				let firstName = allRows[i].split(",")[0].toLowerCase();
+				let lastName = allRows[i].split(",")[1].toLowerCase();
+				let knowre = allRows[i].split(",")[3].toLowerCase();
 
-				let output = "";
-				for (var i =  0; i < allRows.length; i++) {				
-					
-					let firstName = allRows[i].split(",")[0].toLowerCase();
-					let lastName = allRows[i].split(",")[1].toLowerCase();
-					let knowre = allRows[i].split(",")[3].toLowerCase();
-					
-					output += "<div id='" + firstName + "," + lastName + "'>" + knowre + "</div>";
-				}
-
-				
-				$("#output").html(output);
+				output += "<div id='" + firstName + "," + lastName + "'>" + knowre + "</div>";
 			}
 
-
 			
-				
-					
+			$("#output").html(output);					
 		
 		}	
 
@@ -47,7 +38,7 @@
 
 </head>
 
-<body onload="init()">
+<body>
 	<div id="output">test</div>
 </body>
 </html>
