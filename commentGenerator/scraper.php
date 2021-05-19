@@ -3,8 +3,6 @@
 	<title>Progress Tracker</title>	
 </head>
 
-
-
 <body>
 	<div id="output">
 
