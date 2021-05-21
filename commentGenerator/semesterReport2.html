@@ -107,7 +107,8 @@
 					name = name.replace(/['"\d/]/g, '');			
 					lastName = lastName.replace(/['"\d/]/g, '');
 					// Removing nickname in parenthesis
-					name = name.replace(/\([^()]*\)/g, '');		
+					name = name.replace(/[^\)]+(\()/g, '');		
+					name = name.replace(/[\)\s]/g, '');	
 					lastName = lastName.replace(/\([^()]*\)/g, '');																				
 					let comment = "";
 					comment = makeComment(name, progressBucket, "they");
