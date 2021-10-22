@@ -1,0 +1,245 @@
+<html>
+<head>
+	<title>Comment Generator</title>	
+
+	<style type="text/css">
+		body {
+			background-color: #242830;
+			text-align: center;
+			color: #ddd;
+		}	
+		a {			
+			color: #fff; 
+		}	
+		h1, h3 {			
+			color: #fff;
+			font-family: Futura,Trebuchet MS,Arial,sans-serif; 
+		}
+
+		#instructions {
+			text-align: left;
+			max-width: 800px;
+			margin: auto; 
+			padding: 20px;
+			border-bottom: solid #aaa 1px; 
+		}
+		#output {
+			max-width: 800px;
+			text-align: left;
+			padding: 0px 20px 0px 20px;
+			margin:  auto;
+		}
+		.comment {
+			margin: 10px 20px 10px 20px;
+		}
+		.button {
+			margin: 10px 10px 10px 10px;
+		}
+
+	</style>
+
+	<!-- JQuery CDN -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="jquery.csv.js"></script>
+
+	<!-- Loading and parsing script -->
+	<script>
+
+		var mathLevel;
+
+		function init() {
+			// const reader = new FileReader();
+			// const fileSelector = document.getElementById('file-selector');
+
+			// fileSelector.addEventListener('change', (event) => {
+			// 	fileList = event.target.files;
+			// 	console.log(fileList);
+			// 	reader.readAsText(fileList[0]);
+			// });
+
+			
+			$(document).ready(function() {
+				$.ajax({
+			    	type: "GET",
+			    	url: "files/geometry.csv",
+			    	dataType: "text",
+			    	success: function(data) {
+			    		processData(data);
+			    	}
+			    });
+			});
+			
+			
+			//reader.addEventListener('load', (event) => {
+			
+			function processData(data) {
+				
+				console.log(data);
+
+				var allRows = data.split(/\r?\n|\r/);
+							
+
+				//Parsing data
+				for (var i = 39; i < allRows.length; i+=2) {
+					
+					mathLevel = document.getElementById("mathLevel").value; 
+
+					let student = allRows[i];					
+					let name = student.split(",")[1];
+					let lastName = student.split(",")[0];
+					
+					let knowre1 = student.split(",")[2];
+					let test1 = student.split(",")[3];
+
+					let knowre2 = student.split(",")[4];
+					let test2 = student.split(",")[5];
+
+					let knowre3 = student.split(",")[6];
+					let test3 = student.split(",")[7];	
+
+					let knowre4 = student.split(",")[8];
+					let test4 = student.split(",")[9];
+
+					let knowre5 = student.split(",")[10];
+					let test5 = student.split(",")[11];
+
+					let knowre6 = student.split(",")[12];
+					let test6 = student.split(",")[13];								
+
+					let tests = [test1, test2, test3, test4, test5, test6];
+					let testSummary = "";
+					
+					// Creating testsSummary
+					for (var j = 0; j < tests.length; j++) {
+						let addScore = "";
+						if (tests[j] == "") { addScore = "None"; }
+						else { 
+							addScore = tests[j]; 							
+						}
+
+						if(testSummary == "") { testSummary = addScore; }
+						else { testSummary += ", " + addScore; }
+					}
+
+					let progressBucket = "";
+					// 0 - 2 Tests
+					if((tests[2] < 70) && (tests[3] < 70 && tests[4] < 70 && tests[5] < 70)) { progressBucket = "0"; }
+					// 3 - 5 Tests
+					if((tests[2] >= 70) || (tests[3] >= 70)) { progressBucket = "1"; }
+					// 6 Tests
+					if(tests[3] >= 70 && tests[4] >= 70 && tests[5] >= 70) { progressBucket = "2"; }
+																	
+					// Removing graduation year
+					name = name.replace(/['"\d/]/g, '');			
+					lastName = lastName.replace(/['"\d/]/g, '');
+					// Removing nickname in parenthesis
+					name = name.replace(/[^\)]+(\()/g, '');		
+					name = name.replace(/[\)\s]/g, '');	
+					lastName = lastName.replace(/\([^()]*\)/g, '');																				
+					let comment = "";
+					comment = makeComment(name, progressBucket, "they");
+
+					// Outputting comments
+					let htmlClass = "comment";					
+					
+
+					document.getElementById("output").innerHTML += "<br><h3>" + name + " "+ lastName +"</h3><b>Test Scores: "+ testSummary +"</b><div id="+ i +" class='"+ htmlClass +"'>" + comment + "</div>";					
+
+					// Adding copy to clipboard button
+					document.getElementById("output").innerHTML += "<div class='comment'><b>Copy</b>: <button class='button' onclick='copy(\""+ name +"\", \""+ progressBucket +"\", \"he\")'>He/His</button><button class='button' onclick='copy(\""+ name +"\", \""+ progressBucket +"\", \"she\")'>She/Her</button><button class='button' onclick='copy(\""+ name +"\", \""+ progressBucket +"\", \"they\")'>They/Their</button></div>";						
+				}
+			}
+		}	
+
+		function copy(name, progressBucket, gender) {
+			let textToCopy = makeComment(name, progressBucket, gender); 
+			// console.log(textToCopy);
+			copyToClipboard(textToCopy);				
+		}
+
+		function makeComment(name, progressBucket, gender) {
+
+			let prounounPossesive, pronounSubject;
+			switch (gender) {
+				case "he":
+					// prounounPossesive possesive
+					prounounPossesive = "his";
+					// prounounPossesive subject
+					pronounSubject = "he";	
+					break;
+				case "she":
+					// prounounPossesive possesive
+					prounounPossesive = "her";
+					// prounounPossesive subject
+					pronounSubject = "she";	
+					break;
+				case "they":
+					// prounounPossesive possesive
+					prounounPossesive = "their";
+					// prounounPossesive subject
+					pronounSubject = "they";	
+					break;
+			}
+
+			let comment = "mathLAB is a self-paced math program that helps students navigate their core math requirements in a way that's tailored to their unique needs. To complete "+ mathLevel +", "+ name +" is expected to complete six chapter tests, i.e. three per semester, as well as each chapter’s instructional practice. <br><br>";
+			switch(progressBucket) {
+				// 0 - 2 Tests
+				case "0":
+					comment  += "Though "+ name +" has a slower pace engaging with the class material, reflected by "+ prounounPossesive +" progress on the Knowre instructional platform and "+ prounounPossesive +" few attempted tests over the course of this academic year, "+ pronounSubject +" continues to make progress with the curriculum.  "+ name +"'s Semester 1 grade will read “In Progress” until "+ name +" finishes the three required chapter tests for "+ prounounPossesive +" Semester 1 grade. Once "+ pronounSubject +" completes these tests, "+ prounounPossesive +" grade for Semester 1 will be entered retroactively. At that point, "+ pronounSubject +" can continue on with the three chapter tests required for "+ prounounPossesive +" Semester 2 grade. If "+ name +" would like to work independently over the summer, "+ name +" will continue to have access to the Knowre platform; "+ name +" can also enroll in summer mathLab or continue where "+ pronounSubject +" left off in the fall. ";
+					break;
+				
+				// 3 - 4 Tests
+				case "1":
+					comment += name +" is demonstrating good command of the class material; "+ prounounPossesive +" grade reflects "+ prounounPossesive +" performance with the Knowre instructional platform, as well as "+ prounounPossesive +" performance on three or more chapter tests. "+ name +" has successfully completed the first semester of "+ mathLevel +" and continues to make progress through the second semester’s curriculum. If "+ pronounSubject +" would like to work independently over the summer, "+ pronounSubject +" will continue to have access to the Knowre platform; "+ pronounSubject +" can also enroll in summer mathLab or continue where "+ pronounSubject +" left off in the fall. Keep up the great work, "+ name +"!";
+					break;
+				
+				// 6 Tests
+				case "2":
+					comment += name +" has demonstrated excellent command of the "+ mathLevel +" class material. "+ name +"'s grade reflects "+ prounounPossesive +" performance on the Knowre instructional platform, as well as "+ prounounPossesive +" performance on six chapter tests. Congratulations, "+ name +"!";
+					break;
+			}
+
+			return comment;
+		}
+
+		const copyToClipboard = str => {
+			const el = document.createElement('textarea');
+			el.value = str;
+			el.setAttribute('readonly', '');
+			el.style.position = 'absolute';
+			el.style.left = '-9999px';
+			document.body.appendChild(el);
+			const selected = document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
+			el.select();
+			document.execCommand('copy');
+			document.body.removeChild(el);
+			if (selected) {
+				document.getSelection().removeAllRanges();
+				document.getSelection().addRange(selected);
+			}
+		};
+
+	</script>
+
+</head>
+
+<body onload="init()">
+
+	<div id="instructions">
+		<h1>Progress Reports 1, Fall 2021</h1>
+		<input type="file" id="file-selector">
+
+		<div style="display: inline-block; float: right;">
+			Math Level: 
+			<select id="mathLevel">
+				<option value="Algebra I">Algebra I</option>
+				<option value="Algebra II">Algebra II</option>
+				<option value="Geometry">Geometry</option>				
+			</select>
+		</div>
+	</div>	
+
+	<div id="output"></div>
+
+</body>
+</html>
