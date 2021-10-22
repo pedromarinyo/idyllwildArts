@@ -40,7 +40,6 @@
 
 	<!-- JQuery CDN -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="jquery.csv.js"></script>
 
 	<!-- Loading and parsing script -->
 	<script>
@@ -57,8 +56,10 @@
 			// 	reader.readAsText(fileList[0]);
 			// });
 
-			
-			$(document).ready(function() {
+			$("#mathLevel").on("change", function() {
+
+				mathLevel = document.getElementById("mathLevel").value;
+
 				$.ajax({
 			    	type: "GET",
 			    	url: "geometry.csv",
@@ -67,8 +68,8 @@
 			    		processData(data);
 			    	}
 			    });
+
 			});
-			
 			
 			//reader.addEventListener('load', (event) => {
 			
@@ -232,6 +233,7 @@
 		<div style="display: inline-block; float: right;">
 			Math Level: 
 			<select id="mathLevel">
+				<option disabled selected value> -- select a math level -- </option>
 				<option value="Algebra I">Algebra I</option>
 				<option value="Algebra II">Algebra II</option>
 				<option value="Geometry">Geometry</option>				
