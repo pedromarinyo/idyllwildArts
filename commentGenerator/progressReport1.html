@@ -44,46 +44,101 @@
 	<!-- Loading and parsing script -->
 	<script>
 
+		// Password
+		var password = prompt("Password")
+		if (password != "MATHlab2021") {
+			location = "opps.html";
+		}
+
+		// Global variables
 		var mathLevel;
+		var mathLevels = ["", "Algebra I", "Geometry", "Algebra II"];
+		var nTests;
+		var numbersArray = ["zero", "one", "two", "three", "four", "five", "six"];
+		var progressBucketsArray = [
+			"Started last year; wrong math level on progress report.",
+			"Started last year; hasn't completed first semester; severely off-pace.",
+			"Started last year; completed first semester; off-pace.",
+			"No tests; started this year; on pace.",
+			"One or two tests; on pace.",
+			"Promoted this year."
+		];
+
+		var lastYearNames = [
+			// Algebra I
+			"Charlotte Mays",
+			"Rentso Stavrev",
+
+			// Geometry
+			"Rustam Dzhabrailov",
+			"Tree Madden",
+			"Leo Li",
+			"Steve Kang",
+			"Louis Cui",
+			"Lisa Li",
+			"Mati Canelas Collazos",
+			"Rachel Yang",
+			"Athena Stuebe",
+			"Brandon Chu",
+
+			// Algebra II
+			"EddyAdad Perez Trimiño",
+			"AnaNava",
+			"Daniel",
+			"Ella Garnes",
+			"Clara Kang",
+			"Sedona Kmen",
+			"KraShane Sims"
+		];
+
+		var offMathLevelNames = [
+			"Zara Teplitzky",
+			"Anjali Kaptain",
+			"Jenny Hong",
+			"Benjamin Biber",
+			"Nelli Safina",
+			"Belle Tsai",
+			"Zach Russo",
+			"Jessie Chen"
+		];
+
+		var promotedThisYearNames = [
+			"Adrien Wang",
+			"Drew Aggarwal",
+			"Jasmine Hu",
+			"Sammi Yang",
+			"Maria Reyes",
+			"Lisa Zhou"
+		];
 
 		function init() {
-			// const reader = new FileReader();
-			// const fileSelector = document.getElementById('file-selector');
-
-			// fileSelector.addEventListener('change', (event) => {
-			// 	fileList = event.target.files;
-			// 	console.log(fileList);
-			// 	reader.readAsText(fileList[0]);
-			// });
 
 			$("#mathLevel").on("change", function() {
 
-				mathLevel = document.getElementById("mathLevel").value;
+				$("#output").html("");
+
+				mathLevel = document.getElementById("mathLevel").selectedIndex;
+				console.log(mathLevel);
 
 				$.ajax({
 			    	type: "GET",
-			    	url: "geometry.csv",
+			    	url: mathLevels[mathLevel] + ".csv",
 			    	dataType: "text",
 			    	success: function(data) {
 			    		processData(data);
 			    	}
 			    });
 
-			});
-			
-			//reader.addEventListener('load', (event) => {
+			});			
 			
 			function processData(data) {
 				
 				console.log(data);
 
-				var allRows = data.split(/\r?\n|\r/);
-							
+				var allRows = data.split(/\r?\n|\r/);							
 
 				//Parsing data
-				for (var i = 39; i < allRows.length; i+=2) {
-					
-					mathLevel = document.getElementById("mathLevel").value; 
+				for (var i = 39; i < allRows.length; i+=2) {									
 
 					let student = allRows[i];					
 					let name = student.split(",")[1];
@@ -109,52 +164,67 @@
 
 					let tests = [test1, test2, test3, test4, test5, test6];
 					let testSummary = "";
-					
+					nTests = 0;
+
 					// Creating testsSummary
 					for (var j = 0; j < tests.length; j++) {
 						let addScore = "";
-						if (tests[j] == "") { addScore = "None"; }
+						if (tests[j] == "") { addScore = "<span style='color: tomato;'>None</span>"; }
 						else { 
-							addScore = tests[j]; 							
+							addScore = "<span style='color: LightGreen;'>" + tests[j] + "</span>";
+							nTests++; 							
 						}
 
 						if(testSummary == "") { testSummary = addScore; }
 						else { testSummary += ", " + addScore; }
 					}
 
-					let progressBucket = "";
-					// 0 - 2 Tests
-					if((tests[2] < 70) && (tests[3] < 70 && tests[4] < 70 && tests[5] < 70)) { progressBucket = "0"; }
-					// 3 - 5 Tests
-					if((tests[2] >= 70) || (tests[3] >= 70)) { progressBucket = "1"; }
-					// 6 Tests
-					if(tests[3] >= 70 && tests[4] >= 70 && tests[5] >= 70) { progressBucket = "2"; }
-																	
+					nTests = numbersArray[nTests];
+
 					// Removing graduation year
 					name = name.replace(/['"\d/]/g, '');			
 					lastName = lastName.replace(/['"\d/]/g, '');
 					// Removing nickname in parenthesis
 					name = name.replace(/[^\)]+(\()/g, '');		
 					name = name.replace(/[\)\s]/g, '');	
-					lastName = lastName.replace(/\([^()]*\)/g, '');																				
+					lastName = lastName.replace(/\([^()]*\)/g, '');	
+
+					let progressBucket = "";
+					// Started last year; wrong math level on progress report.
+					if (offMathLevelNames.includes(name + " " + lastName)) { progressBucket = "0"; nTests = "<span style='color: tomato;'>[number of tests]</span>";}								
+					// Started last year; hasn't completed first semester; severely off-pace.
+					else if (lastYearNames.includes(name + " " + lastName) && (tests[0] < 70 || tests[1] < 70 || tests[2] < 70)) { progressBucket = 1; }										
+					// Promoted last year.
+					else if(promotedThisYearNames.includes(name + " " + lastName)) { progressBucket = 5; }
+
+					// Started last year; completed first semester; off-pace.
+					else if(lastYearNames.includes(name + " " + lastName) && (tests[0] >= 70 && tests[1] >= 70 && tests[2] >= 70)) { progressBucket = 2; }
+					
+					// No tests; started this year; on pace.
+					else if(tests[0] < 70 && tests[1] < 70 && tests[2] < 70) { progressBucket = 3; }
+					
+					// One or two tests; on pace.
+					else if(tests[0] >= 70 || tests[1] >= 70) { progressBucket = 4; }
+					
+					console.log(lastYearNames.includes(name + " " + lastName) + " : " + name + " " + lastName);
+																																								
 					let comment = "";
-					comment = makeComment(name, progressBucket, "they");
+					comment = makeComment(name, progressBucket, "he/she");
 
 					// Outputting comments
 					let htmlClass = "comment";					
 					
-
-					document.getElementById("output").innerHTML += "<br><h3>" + name + " "+ lastName +"</h3><b>Test Scores: "+ testSummary +"</b><div id="+ i +" class='"+ htmlClass +"'>" + comment + "</div>";					
+					document.getElementById("output").innerHTML += "<br><h3>" + name + " "+ lastName +"</h3><b>Test Scores: "+ testSummary +"</b><br><i>"+ progressBucketsArray[progressBucket] +"</i><div id="+ i +" class='"+ htmlClass +"'>" + comment + "</div>";					
 
 					// Adding copy to clipboard button
-					document.getElementById("output").innerHTML += "<div class='comment'><b>Copy</b>: <button class='button' onclick='copy(\""+ name +"\", \""+ progressBucket +"\", \"he\")'>He/His</button><button class='button' onclick='copy(\""+ name +"\", \""+ progressBucket +"\", \"she\")'>She/Her</button><button class='button' onclick='copy(\""+ name +"\", \""+ progressBucket +"\", \"they\")'>They/Their</button></div>";						
+					document.getElementById("output").innerHTML += "<div class='comment'><b>Copy</b>: <button class='button' onclick='copy(\""+ name +"\", \""+ progressBucket +"\", \"he\")'>He/His</button><button class='button' onclick='copy(\""+ name +"\", \""+ progressBucket +"\", \"she\")'>She/Her</button></div>";						
 				}
 			}
 		}	
 
 		function copy(name, progressBucket, gender) {
 			let textToCopy = makeComment(name, progressBucket, gender); 
-			// console.log(textToCopy);
+			console.log(textToCopy);
 			copyToClipboard(textToCopy);				
 		}
 
@@ -163,41 +233,53 @@
 			let prounounPossesive, pronounSubject;
 			switch (gender) {
 				case "he":
-					// prounounPossesive possesive
 					prounounPossesive = "his";
-					// prounounPossesive subject
 					pronounSubject = "he";	
+					pronounObject = "him";
 					break;
 				case "she":
-					// prounounPossesive possesive
 					prounounPossesive = "her";
-					// prounounPossesive subject
 					pronounSubject = "she";	
+					pronounObject = "her";
 					break;
-				case "they":
-					// prounounPossesive possesive
-					prounounPossesive = "their";
-					// prounounPossesive subject
-					pronounSubject = "they";	
+				case "he/she":					
+					prounounPossesive = "his/her";					
+					pronounSubject = "he/she";	
+					pronounObject = "him/her";
 					break;
 			}
 
-			let comment = "mathLAB is a self-paced math program that helps students navigate their core math requirements in a way that's tailored to their unique needs. To complete "+ mathLevel +", "+ name +" is expected to complete six chapter tests, i.e. three per semester, as well as each chapter’s instructional practice. <br><br>";
+			let comment = "mathLAB is a self-paced math program that helps students navigate their core math requirements in a way that's tailored to their unique needs. To complete "+ mathLevels[mathLevel] +", "+ name +" is expected to complete six chapter tests, i.e. three per semester, as well as each chapter's instructional practice. ";
+
 			switch(progressBucket) {
-				// 0 - 2 Tests
-				case "0":
-					comment  += "Though "+ name +" has a slower pace engaging with the class material, reflected by "+ prounounPossesive +" progress on the Knowre instructional platform and "+ prounounPossesive +" few attempted tests over the course of this academic year, "+ pronounSubject +" continues to make progress with the curriculum.  "+ name +"'s Semester 1 grade will read “In Progress” until "+ name +" finishes the three required chapter tests for "+ prounounPossesive +" Semester 1 grade. Once "+ pronounSubject +" completes these tests, "+ prounounPossesive +" grade for Semester 1 will be entered retroactively. At that point, "+ pronounSubject +" can continue on with the three chapter tests required for "+ prounounPossesive +" Semester 2 grade. If "+ name +" would like to work independently over the summer, "+ name +" will continue to have access to the Knowre platform; "+ name +" can also enroll in summer mathLab or continue where "+ pronounSubject +" left off in the fall. ";
+				// Started last year; wrong math level on progress report.
+				case 0:
+					comment += name + " began "+ mathLevels[mathLevel - 1] +" last year, and though slightly behind pace, "+ pronounSubject +" has already completed the first semester and continues to make solid progress. At the moment, "+ pronounSubject +" has completed "+ nTests +" of the "+ mathLevels[mathLevel - 1] +"'s six tests. As "+ pronounSubject +" finishes up "+ mathLevels[mathLevel - 1] +", "+ prounounPossesive +" transcript will read "+ mathLevels[mathLevel] +"; "+ name +" will advance onto "+ mathLevels[mathLevel] +" as soon as "+ pronounSubject +" completes "+ mathLevels[mathLevel - 1] +"'s second semester requirements.";
 					break;
 				
-				// 3 - 4 Tests
-				case "1":
-					comment += name +" is demonstrating good command of the class material; "+ prounounPossesive +" grade reflects "+ prounounPossesive +" performance with the Knowre instructional platform, as well as "+ prounounPossesive +" performance on three or more chapter tests. "+ name +" has successfully completed the first semester of "+ mathLevel +" and continues to make progress through the second semester’s curriculum. If "+ pronounSubject +" would like to work independently over the summer, "+ pronounSubject +" will continue to have access to the Knowre platform; "+ pronounSubject +" can also enroll in summer mathLab or continue where "+ pronounSubject +" left off in the fall. Keep up the great work, "+ name +"!";
+				// Started last year; hasn't completed first semester; severely off-pace.
+				case 1:
+					comment += name + " began "+ mathLevels[mathLevel] +" last year, and though "+ pronounSubject +" has made some progress, "+ pronounSubject +" remains behind pace. At the moment, "+ pronounSubject +" has completed "+ nTests +" of "+ mathLevels[mathLevel] +"'s six tests. We believe that "+ name +" is capable of being successful in mathLAB and encourage "+ pronounObject +" to seek assistance during class or x-block to ensure "+ pronounSubject +" makes steady progress moving forward.";
 					break;
 				
-				// 6 Tests
-				case "2":
-					comment += name +" has demonstrated excellent command of the "+ mathLevel +" class material. "+ name +"'s grade reflects "+ prounounPossesive +" performance on the Knowre instructional platform, as well as "+ prounounPossesive +" performance on six chapter tests. Congratulations, "+ name +"!";
+				// Started last year; completed first semester; off-pace.
+				case 2:
+					comment += name + " began "+ mathLevels[mathLevel] +" last year, and though slightly behind pace, "+ pronounSubject +" continues to make solid progress. At the moment, "+ pronounSubject +" has completed "+ nTests +" of "+ mathLevels[mathLevel] +"'s six tests. "+ name +" is showing command of the class material, and "+ pronounSubject +" has successfully completed the first semester of "+ mathLevels[mathLevel] +", and "+ pronounSubject +" keeps up "+ prounounPossesive +" current pace, "+ pronounSubject +"'ll soon complete "+ mathLevels[mathLevel] +" second semester's requirements and advance onto the next math level.";
 					break;
+
+				// No tests; started this year; on pace.
+				case 3:
+					comment += "Because "+ name +" has not attempted any chapter tests thus far in "+ mathLevels[mathLevel] +", it's expected that "+ prounounPossesive +" grade will change to better reflect his/her understanding as "+ prounounPossesive +" moves forward. At the moment, "+ pronounSubject +"'s grade reflects "+ prounounPossesive +" progress on the instructional practice presented through the Knowre math platform.";
+					break;
+
+				// One or two tests; on pace.
+				case 4:
+					comment += name +" has demonstrated excellent command of the class material. At the moment, "+ name +" is on pace, having completed "+ nTests +" of the year's six tests. "+ name +"'s grade reflects "+ prounounPossesive +" performance on "+ prounounPossesive +" chapter tests, as well as the instructional practice presented through the Knowre math platform. Keep up the great work, "+ name +".";
+					break;
+				// Promoted this year.
+				case 5:
+					comment += name +" began "+ mathLevels[mathLevel - 1] +" last year; during this semester, "+ pronounSubject +" has completed "+ pronounSubject +" second semester and has been enrolled in "+ mathLevels[mathLevel] +". "+ name +" continues to make solid progress. At the moment, "+ pronounSubject +" has completed "+ nTests +" of the "+ mathLevels[mathLevel] +"'s six tests. Keep up the great work, "+ name +".";
+					break;				
 			}
 
 			return comment;
@@ -227,16 +309,16 @@
 <body onload="init()">
 
 	<div id="instructions">
-		<h1>Progress Reports 1, Fall 2021</h1>
-		<input type="file" id="file-selector">
+		<h1>Progress Reports 1</h1>
+		<h2>Fall 2021</h2>
 
-		<div style="display: inline-block; float: right;">
+		<div style="text-align: right;">
 			Math Level: 
 			<select id="mathLevel">
-				<option disabled selected value> -- select a math level -- </option>
+				<option disabled selected value></option>
 				<option value="Algebra I">Algebra I</option>
-				<option value="Algebra II">Algebra II</option>
-				<option value="Geometry">Geometry</option>				
+				<option value="Geometry">Geometry</option>
+				<option value="Algebra II">Algebra II</option>								
 			</select>
 		</div>
 	</div>	
