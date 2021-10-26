@@ -68,35 +68,34 @@
 			// Algebra I
 			"Charlotte Mays",
 			"Rentso Stavrev",
+			"Nelli Safina",
 
 			// Geometry
 			"Rustam Dzhabrailov",
 			"Tree Madden",
 			"Leo Li",
-			"Steve Kang",
+			"Steve Kang ",
 			"Louis Cui",
 			"Lisa Li",
 			"Mati Canelas Collazos",
-			"Rachel Yang",
 			"Athena Stuebe",
 			"Brandon Chu",
 
 			// Algebra II
-			"EddyAdad Perez Trimiño",
-			"AnaNava",
-			"Daniel",
+			"EddyAdad Perez Trimino",
+			"Ana Nava Candini",
+			"Daniel Chen",
 			"Ella Garnes",
 			"Clara Kang",
 			"Sedona Kmen",
-			"KraShane Sims"
+			"Shane Sims"
 		];
 
 		var offMathLevelNames = [
 			"Zara Teplitzky",
 			"Anjali Kaptain",
 			"Jenny Hong",
-			"Benjamin Biber",
-			"Nelli Safina",
+			"Ben Biber",			
 			"Belle Tsai",
 			"Zach Russo",
 			"Jessie Chen"
@@ -107,8 +106,8 @@
 			"Drew Aggarwal",
 			"Jasmine Hu",
 			"Sammi Yang",
-			"Maria Reyes",
-			"Lisa Zhou"
+			"Maria Marin Reyes",
+			"Lisa Zhao"
 		];
 
 		function init() {
@@ -184,6 +183,7 @@
 					// Removing graduation year
 					name = name.replace(/['"\d/]/g, '');			
 					lastName = lastName.replace(/['"\d/]/g, '');
+					lastName = lastName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 					// Removing nickname in parenthesis
 					name = name.replace(/[^\)]+(\()/g, '');		
 					name = name.replace(/[\)\s]/g, '');	
@@ -191,7 +191,7 @@
 
 					let progressBucket = "";
 					// Started last year; wrong math level on progress report.
-					if (offMathLevelNames.includes(name + " " + lastName)) { progressBucket = "0"; nTests = "<span style='color: tomato;'>[number of tests]</span>";}								
+					if (offMathLevelNames.includes(name + " " + lastName)) { progressBucket = 0; nTests = "<span style='color: tomato;'>[number of tests]</span>";}								
 					// Started last year; hasn't completed first semester; severely off-pace.
 					else if (lastYearNames.includes(name + " " + lastName) && (tests[0] < 70 || tests[1] < 70 || tests[2] < 70)) { progressBucket = 1; }										
 					// Promoted last year.
@@ -264,12 +264,12 @@
 				
 				// Started last year; completed first semester; off-pace.
 				case 2:
-					comment += name + " began "+ mathLevels[mathLevel] +" last year, and though slightly behind pace, "+ pronounSubject +" continues to make solid progress. At the moment, "+ pronounSubject +" has completed "+ nTests +" of "+ mathLevels[mathLevel] +"'s six tests. "+ name +" is showing command of the class material, and "+ pronounSubject +" has successfully completed the first semester of "+ mathLevels[mathLevel] +", and "+ pronounSubject +" keeps up "+ prounounPossesive +" current pace, "+ pronounSubject +"'ll soon complete "+ mathLevels[mathLevel] +" second semester's requirements and advance onto the next math level.";
+					comment += name + " began "+ mathLevels[mathLevel] +" last year, and though slightly behind pace, "+ pronounSubject +" continues to make solid progress. At the moment, "+ pronounSubject +" has completed "+ nTests +" of "+ mathLevels[mathLevel] +"'s six tests. "+ name +" is showing command of the class material and has successfully completed the first semester of "+ mathLevels[mathLevel] +". If "+ pronounSubject +" keeps up "+ prounounPossesive +" current pace, "+ pronounSubject +"'ll soon complete "+ mathLevels[mathLevel] +" second semester's requirements and advance onto the next math level.";
 					break;
 
 				// No tests; started this year; on pace.
 				case 3:
-					comment += "Because "+ name +" has not attempted any chapter tests thus far in "+ mathLevels[mathLevel] +", it's expected that "+ prounounPossesive +" grade will change to better reflect his/her understanding as "+ prounounPossesive +" moves forward. At the moment, "+ pronounSubject +"'s grade reflects "+ prounounPossesive +" progress on the instructional practice presented through the Knowre math platform.";
+					comment += "Because "+ name +" has not attempted any chapter tests thus far in "+ mathLevels[mathLevel] +", it's expected that "+ prounounPossesive +" grade will change to better reflect his/her understanding as "+ pronounSubject +" moves forward. At the moment, "+ prounounPossesive +" grade reflects "+ prounounPossesive +" progress on the instructional practice presented through the Knowre math platform.";
 					break;
 
 				// One or two tests; on pace.
@@ -278,7 +278,7 @@
 					break;
 				// Promoted this year.
 				case 5:
-					comment += name +" began "+ mathLevels[mathLevel - 1] +" last year; during this semester, "+ pronounSubject +" has completed "+ pronounSubject +" second semester and has been enrolled in "+ mathLevels[mathLevel] +". "+ name +" continues to make solid progress. At the moment, "+ pronounSubject +" has completed "+ nTests +" of the "+ mathLevels[mathLevel] +"'s six tests. Keep up the great work, "+ name +".";
+					comment += name +" began "+ mathLevels[mathLevel - 1] +" last year; during this semester, "+ pronounSubject +" completed "+ prounounPossesive +" second semester and has been enrolled in "+ mathLevels[mathLevel] +". "+ name +" continues to make solid progress. At the moment, "+ pronounSubject +" has completed "+ nTests +" of the "+ mathLevels[mathLevel] +"'s six tests. Keep up the great work, "+ name +".";
 					break;				
 			}
 
