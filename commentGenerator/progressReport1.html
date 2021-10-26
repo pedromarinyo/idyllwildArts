@@ -209,7 +209,7 @@
 					console.log(lastYearNames.includes(name + " " + lastName) + " : " + name + " " + lastName);
 																																								
 					let comment = "";
-					comment = makeComment(name, progressBucket, "he/she");
+					comment = makeComment(name, progressBucket, "he/she", nTests);
 
 					// Outputting comments
 					let htmlClass = "comment";					
@@ -217,20 +217,22 @@
 					document.getElementById("output").innerHTML += "<br><h3>" + name + " "+ lastName +"</h3><b>Test Scores: "+ testSummary +"</b><br><i>"+ progressBucketsArray[progressBucket] +"</i><div id="+ i +" class='"+ htmlClass +"'>" + comment + "</div>";					
 
 					// Adding copy to clipboard button
-					document.getElementById("output").innerHTML += "<div class='comment'><b>Copy</b>: <button class='button' onclick='copy(\""+ name +"\", "+ progressBucket +", \"he\")'>He/His</button><button class='button' onclick='copy(\""+ name +"\", "+ progressBucket +", \"she\")'>She/Her</button></div>";						
+					document.getElementById("output").innerHTML += "<div class='comment'><b>Copy</b>: <button class='button' onclick='copy(\""+ name +"\", "+ progressBucket +", \"he\", \""+ nTests +"\")'>He/His</button><button class='button' onclick='copy(\""+ name +"\", "+ progressBucket +", \"she\",\""+ nTests +"\")'>She/Her</button></div>";						
 				}
 			}
 		}	
 
-		function copy(name, progressBucket, gender) {
-			let textToCopy = makeComment(name, progressBucket, gender); 
+		function copy(name, progressBucket, gender, nTests) {
+			let textToCopy = makeComment(name, progressBucket, gender, nTests); 
 			console.log(textToCopy);
 			copyToClipboard(textToCopy);				
 		}
 
-		function makeComment(name, progressBucket, gender) {
+		function makeComment(name, progressBucket, gender, nTestsIn) {
 
-			let prounounPossesive, pronounSubject;
+			console.log(nTestsIn);
+
+			let prounounPossesive, pronounSubject, nTests;
 			switch (gender) {
 				case "he":
 					prounounPossesive = "his";
@@ -248,6 +250,8 @@
 					pronounObject = "him/her";
 					break;
 			}
+
+			nTests = nTestsIn;
 
 			let comment = "mathLAB is a self-paced math program that helps students navigate their core math requirements in a way that's tailored to their unique needs. To complete "+ mathLevels[mathLevel] +", "+ name +" is expected to complete six chapter tests, i.e. three per semester, as well as each chapter's instructional practice. ";
 
