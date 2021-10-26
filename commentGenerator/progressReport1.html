@@ -217,7 +217,7 @@
 					document.getElementById("output").innerHTML += "<br><h3>" + name + " "+ lastName +"</h3><b>Test Scores: "+ testSummary +"</b><br><i>"+ progressBucketsArray[progressBucket] +"</i><div id="+ i +" class='"+ htmlClass +"'>" + comment + "</div>";					
 
 					// Adding copy to clipboard button
-					document.getElementById("output").innerHTML += "<div class='comment'><b>Copy</b>: <button class='button' onclick='copy(\""+ name +"\", \""+ progressBucket +"\", \"he\")'>He/His</button><button class='button' onclick='copy(\""+ name +"\", \""+ progressBucket +"\", \"she\")'>She/Her</button></div>";						
+					document.getElementById("output").innerHTML += "<div class='comment'><b>Copy</b>: <button class='button' onclick='copy(\""+ name +"\", \""+ progressBucket +"\", \"he\")'>He/His</button><button class='button' onclick='copy(\""+ name +"\", "+ progressBucket +", \"she\")'>She/Her</button></div>";						
 				}
 			}
 		}	
