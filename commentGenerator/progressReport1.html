@@ -191,7 +191,7 @@
 
 					let progressBucket = "";
 					// Started last year; wrong math level on progress report.
-					if (offMathLevelNames.includes(name + " " + lastName)) { progressBucket = 0; nTests = "<span style='color: tomato;'>[number of tests]</span>";}								
+					if (offMathLevelNames.includes(name + " " + lastName)) { progressBucket = 0; }								
 					// Started last year; hasn't completed first semester; severely off-pace.
 					else if (lastYearNames.includes(name + " " + lastName) && (tests[0] < 70 || tests[1] < 70 || tests[2] < 70)) { progressBucket = 1; }										
 					// Promoted last year.
